@@ -1,0 +1,17 @@
+ktor:
+  application:
+    modules:
+      - com.racer.ApplicationKt.module
+  deployment:
+    port: 8080
+    environment: test
+
+database:
+  skip-init: true
+  host: localhost
+  port: 3306
+  name: rally_notes
+  username: api_access
+  password: "api_user"
+  pool-size: 20
+
