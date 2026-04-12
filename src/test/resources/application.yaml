@@ -1,0 +1,14 @@
+ktor:
+  application:
+    modules:
+      - com.racing.ApplicationKt.module
+  deployment:
+    port: 8080
+
+database:
+  host: localhost
+  port: 3306
+  name: rally_notes
+  username: api_access
+  password: api_user
+  pool-size: 20
