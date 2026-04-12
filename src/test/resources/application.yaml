@@ -6,9 +6,9 @@ ktor:
     port: 8080
 
 database:
-  host: localhost
-  port: 3306
-  name: rally_notes
-  username: api_access
-  password: api_user
-  pool-size: 20
+  host: ${DB_HOST:localhost}
+  port: ${DB_PORT:3306}
+  name: ${DB_NAME:rally_notes}
+  username: ${DB_USERNAME:rally_user}
+  password: ${DB_PASSWORD:change_me}
+  pool-size: ${DB_POOL_SIZE:20}

@@ -1,45 +1,62 @@
 # rally_notes
 
-This project was created using the [Ktor Project Generator](https://start.ktor.io).
+Ktor API for rally notes and related resources.
 
-Here are some useful links to get you started:
+## Local Environment Setup
 
-- [Ktor Documentation](https://ktor.io/docs/home.html)
-- [Ktor GitHub page](https://github.com/ktorio/ktor)
-- The [Ktor Slack chat](https://app.slack.com/client/T09229ZC6/C0A974TJ9). You'll need
-  to [request an invite](https://surveys.jetbrains.com/s3/kotlin-slack-sign-up) to join.
+This project reads database and server settings from environment variables (see `src/main/resources/application.yaml`).
+No secrets should be committed to git.
 
-## Features
+1. Copy the example env file:
 
-Here's a list of features included in this project:
-
-| Name                                                                   | Description                                                                        |
-|------------------------------------------------------------------------|------------------------------------------------------------------------------------|
-| [CORS](https://start.ktor.io/p/cors)                                   | Enables Cross-Origin Resource Sharing (CORS)                                       |
-| [Routing](https://start.ktor.io/p/routing)                             | Provides a structured routing DSL                                                  |
-| [Content Negotiation](https://start.ktor.io/p/content-negotiation)     | Provides automatic content conversion according to Content-Type and Accept headers |
-| [kotlinx.serialization](https://start.ktor.io/p/kotlinx-serialization) | Handles JSON serialization using kotlinx.serialization library                     |
-| [OpenAPI](https://start.ktor.io/p/openapi)                             | Serves OpenAPI documentation                                                       |
-| [Swagger](https://start.ktor.io/p/swagger)                             | Serves Swagger UI for your project                                                 |
-
-## Building & Running
-
-To build or run the project, use one of the following tasks:
-
-| Task                                    | Description                                                          |
-|-----------------------------------------|----------------------------------------------------------------------|
-| `./gradlew test`                        | Run the tests                                                        |
-| `./gradlew build`                       | Build everything                                                     |
-| `./gradlew buildFatJar`                 | Build an executable JAR of the server with all dependencies included |
-| `./gradlew buildImage`                  | Build the docker image to use with the fat JAR                       |
-| `./gradlew publishImageToLocalRegistry` | Publish the docker image locally                                     |
-| `./gradlew run`                         | Run the server                                                       |
-| `./gradlew runDocker`                   | Run using the local docker image                                     |
-
-If the server starts successfully, you'll see the following output:
-
-```
-2024-12-04 14:32:45.584 [main] INFO  Application - Application started in 0.303 seconds.
-2024-12-04 14:32:45.682 [main] INFO  Application - Responding at http://0.0.0.0:8080
+```bash
+cp .env.example .env
 ```
 
+2. Edit `.env` and set your local values.
+
+3. Load env vars in your shell before running the app:
+
+```bash
+set -a
+source .env
+set +a
+```
+
+> Ktor does not load `.env` automatically. You must export these variables in your shell or configure them in your IDE run configuration.
+
+## Required Environment Variables
+
+| Variable | Purpose | Default |
+|---|---|---|
+| `DB_HOST` | Database host | `localhost` |
+| `DB_PORT` | Database port | `3306` |
+| `DB_NAME` | Database name | `rally_notes` |
+| `DB_USERNAME` | Database username | `rally_user` |
+| `DB_PASSWORD` | Database password | `change_me` |
+| `DB_POOL_SIZE` | Hikari pool size | `20` |
+
+## Build and Run
+
+```bash
+./gradlew test
+./gradlew run
+```
+
+## Swagger / OpenAPI
+
+Swagger UI is enabled through `configureOpenAPI()` and exposed at:
+
+- `http://localhost:8080/swagger`
+
+In this project, the OpenAPI spec is generated from route metadata added with Ktor's `describe { ... }` DSL. Route handlers stay in `routes/*Routes.kt`, while OpenAPI definitions are kept in parallel files under `routes/docs/*OpenApi.kt` and attached via helper functions (for example, `attachRallyOpenApi(...)`).
+
+### How to use it
+
+1. Start the API (`./gradlew run`).
+2. Open `http://localhost:8080/swagger`.
+3. Expand a resource group (for example, `Rallies` or `Teams`).
+4. Inspect request/response schemas and status codes.
+5. Use **Try it out** to execute requests directly from the browser.
+
+> Note: `GET /health` is intentionally hidden from Swagger to keep API docs focused on business endpoints.
