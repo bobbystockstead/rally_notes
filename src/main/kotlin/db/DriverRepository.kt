@@ -16,12 +16,12 @@ class DriverRepository {
         Database.dataSource.connection.use { connection ->
             connection.prepareStatement(sql).use { statement ->
                 statement.executeQuery().use { resultSet ->
-                    val rallies = mutableListOf<Driver>()
+                    val drivers = mutableListOf<Driver>()
                     while (resultSet.next()) {
-                        rallies += mapDriver(resultSet)
+                        drivers += mapDriver(resultSet)
                     }
-                    logger.debug("Retrieved ${rallies.size} rallies from database")
-                    return rallies
+                    logger.debug("Retrieved ${drivers.size} drivers from database")
+                    return drivers
                 }
             }
         }
