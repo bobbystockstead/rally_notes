@@ -16,12 +16,12 @@ class CodriverRepository {
         Database.dataSource.connection.use { connection ->
             connection.prepareStatement(sql).use { statement ->
                 statement.executeQuery().use { resultSet ->
-                    val rallies = mutableListOf<Codriver>()
+                    val codrivers = mutableListOf<Codriver>()
                     while (resultSet.next()) {
-                        rallies += mapCodriver(resultSet)
+                        codrivers += mapCodriver(resultSet)
                     }
-                    logger.debug("Retrieved ${rallies.size} rallies from database")
-                    return rallies
+                    logger.debug("Retrieved ${codrivers.size} codrivers from database")
+                    return codrivers
                 }
             }
         }
