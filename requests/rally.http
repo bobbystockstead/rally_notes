@@ -1,11 +1,11 @@
 ### Get all rallies
-GET http://localhost:8080/api/v1/rallies
+GET http://localhost:8080/rallies
 
 ### Get rally by ID
-GET http://localhost:8080/api/v1/rallies/9
+GET http://localhost:8080/rallies/9
 
 ### Create a new rally
-POST http://localhost:8080/api/v1/rallies
+POST http://localhost:8080/rallies
 Content-Type: application/json
 
 {
@@ -14,7 +14,7 @@ Content-Type: application/json
 }
 
 ### Update a Rally
-PUT http://localhost:8080/api/v1/rallies/9
+PUT http://localhost:8080/rallies/9
 Content-Type: application/json
 
 {

@@ -42,7 +42,7 @@ fun Route.rallyRoutes(repo: RallyRepository) {
         logger.info("Received POST /rallies with rally: ${rally.name}, date: ${rally.date}")
         val newId = repo.create(rally)
 
-        call.response.headers.append(Location, "/api/v1/rallies/$newId")
+        call.response.headers.append(Location, "/rallies/$newId")
         call.respond(HttpStatusCode.Created, mapOf("rally_id" to newId))
         logger.info("Responded POST /rallies with 201 Created, new rally_id: $newId")
     }
