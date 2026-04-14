@@ -1,20 +1,20 @@
 package com.racing.config
 
-import com.racing.db.RallyRepository
-import com.racing.db.TeamRepository
-import com.racing.routes.rallyRoutes
-import com.racing.routes.teamRoutes
+import com.racing.db.*
+import com.racing.routes.*
 import io.ktor.server.application.*
 import io.ktor.server.routing.*
 
 fun Application.configureRouting() {
-    val teamRepo = TeamRepository()
     val rallyRepo = RallyRepository()
+    val driverRepo = DriverRepository()
+    val codriverRepo = CodriverRepository()
 
     routing {
         route("/") {
-            teamRoutes(teamRepo)
             rallyRoutes(rallyRepo)
+            driverRoutes(driverRepo)
+            codriverRoutes(codriverRepo)
         }
     }
 }
