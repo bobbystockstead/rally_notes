@@ -1,12 +1,6 @@
 package com.racing
 
-import com.racing.config.configureDatabase
-import com.racing.config.configureErrorHandling
-import com.racing.config.configureHTTP
-import com.racing.config.configureHealth
-import com.racing.config.configureOpenAPI
-import com.racing.config.configureRouting
-import com.racing.config.configureSerialization
+import com.racing.config.*
 import io.ktor.server.application.*
 
 fun main(args: Array<String>) {

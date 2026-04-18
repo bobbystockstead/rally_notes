@@ -1,6 +1,6 @@
 package com.racing.routes.docs
 
-import com.racing.data.Driver
+import com.racing.data.Tip
 import io.ktor.http.*
 import io.ktor.openapi.*
 import io.ktor.server.routing.*
@@ -8,7 +8,7 @@ import io.ktor.server.routing.openapi.*
 import io.ktor.utils.io.*
 
 @OptIn(ExperimentalKtorApi::class)
-fun attachDriverOpenApi(
+fun attachTipOpenApi(
     getAll: Route,
     getById: Route,
     create: Route,
@@ -16,70 +16,70 @@ fun attachDriverOpenApi(
     delete: Route,
 ) {
     getAll.describe {
-        tag("Drivers")
-        summary = "Get all drivers"
+        tag("Tips")
+        summary = "Get all tips"
         responses {
             HttpStatusCode.OK {
-                description = "List of driver records"
-                schema = jsonSchema<List<Driver>>()
+                description = "List of tip records"
+                schema = jsonSchema<List<Tip>>()
             }
         }
     }
 
     getById.describe {
-        tag("Drivers")
-        summary = "Get driver by id"
+        tag("Tips")
+        summary = "Get tip by id"
         responses {
             HttpStatusCode.OK {
-                description = "Driver found"
-                schema = jsonSchema<Driver>()
+                description = "Tip found"
+                schema = jsonSchema<Tip>()
             }
             HttpStatusCode.NotFound {
-                description = "Driver not found"
+                description = "Tip not found"
             }
         }
     }
 
     create.describe {
-        tag("Drivers")
-        summary = "Create driver"
+        tag("Tips")
+        summary = "Create tip"
         requestBody {
             required = true
-            schema = jsonSchema<Driver>()
+            schema = jsonSchema<Tip>()
         }
         responses {
             HttpStatusCode.Created {
-                description = "Driver created"
+                description = "Tip created"
             }
         }
     }
 
     update.describe {
-        tag("Drivers")
-        summary = "Update driver"
+        tag("Tips")
+        summary = "Update tip"
         requestBody {
             required = true
-            schema = jsonSchema<Driver>()
+            schema = jsonSchema<Tip>()
         }
         responses {
             HttpStatusCode.NoContent {
-                description = "Driver updated"
+                description = "Tip updated"
             }
             HttpStatusCode.NotFound {
-                description = "Driver not found"
+                description = "Tip not found"
             }
         }
     }
 
     delete.describe {
-        tag("Drivers")
-        summary = "Delete driver"
+        tag("Tips")
+        summary = "Delete tip"
         responses {
             HttpStatusCode.NoContent {
-                description = "Driver deleted"
+                description = "Tip deleted"
             }
             HttpStatusCode.NotFound {
-                description = "Driver not found"
+                description = "Tip not found"
             }
         }
     }

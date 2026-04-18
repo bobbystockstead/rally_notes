@@ -2,7 +2,7 @@ package com.racing.db
 
 import com.zaxxer.hikari.HikariConfig
 import com.zaxxer.hikari.HikariDataSource
-import io.ktor.server.config.ApplicationConfig
+import io.ktor.server.config.*
 
 object Database {
 

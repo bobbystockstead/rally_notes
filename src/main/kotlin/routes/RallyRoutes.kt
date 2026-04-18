@@ -3,15 +3,11 @@ package com.racing.routes
 import com.racing.data.Rally
 import com.racing.db.RallyRepository
 import com.racing.routes.docs.attachRallyOpenApi
+import io.ktor.http.*
 import io.ktor.http.HttpHeaders.Location
-import io.ktor.http.HttpStatusCode
-import io.ktor.server.request.receive
-import io.ktor.server.response.respond
-import io.ktor.server.routing.Route
-import io.ktor.server.routing.delete
-import io.ktor.server.routing.get
-import io.ktor.server.routing.post
-import io.ktor.server.routing.put
+import io.ktor.server.request.*
+import io.ktor.server.response.*
+import io.ktor.server.routing.*
 import org.slf4j.LoggerFactory
 
 private val logger = LoggerFactory.getLogger("RallyRoutes")

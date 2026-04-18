@@ -1,6 +1,6 @@
 package com.racing.routes.docs
 
-import com.racing.data.Driver
+import com.racing.data.Intensity
 import io.ktor.http.*
 import io.ktor.openapi.*
 import io.ktor.server.routing.*
@@ -8,7 +8,7 @@ import io.ktor.server.routing.openapi.*
 import io.ktor.utils.io.*
 
 @OptIn(ExperimentalKtorApi::class)
-fun attachDriverOpenApi(
+fun attachIntensityOpenApi(
     getAll: Route,
     getById: Route,
     create: Route,
@@ -16,70 +16,70 @@ fun attachDriverOpenApi(
     delete: Route,
 ) {
     getAll.describe {
-        tag("Drivers")
-        summary = "Get all drivers"
+        tag("Intensities")
+        summary = "Get all intensities"
         responses {
             HttpStatusCode.OK {
-                description = "List of driver records"
-                schema = jsonSchema<List<Driver>>()
+                description = "List of intensity records"
+                schema = jsonSchema<List<Intensity>>()
             }
         }
     }
 
     getById.describe {
-        tag("Drivers")
-        summary = "Get driver by id"
+        tag("Intensities")
+        summary = "Get intensity by id"
         responses {
             HttpStatusCode.OK {
-                description = "Driver found"
-                schema = jsonSchema<Driver>()
+                description = "Intensity found"
+                schema = jsonSchema<Intensity>()
             }
             HttpStatusCode.NotFound {
-                description = "Driver not found"
+                description = "Intensity not found"
             }
         }
     }
 
     create.describe {
-        tag("Drivers")
-        summary = "Create driver"
+        tag("Intensities")
+        summary = "Create intensity"
         requestBody {
             required = true
-            schema = jsonSchema<Driver>()
+            schema = jsonSchema<Intensity>()
         }
         responses {
             HttpStatusCode.Created {
-                description = "Driver created"
+                description = "Intensity created"
             }
         }
     }
 
     update.describe {
-        tag("Drivers")
-        summary = "Update driver"
+        tag("Intensities")
+        summary = "Update intensity"
         requestBody {
             required = true
-            schema = jsonSchema<Driver>()
+            schema = jsonSchema<Intensity>()
         }
         responses {
             HttpStatusCode.NoContent {
-                description = "Driver updated"
+                description = "Intensity updated"
             }
             HttpStatusCode.NotFound {
-                description = "Driver not found"
+                description = "Intensity not found"
             }
         }
     }
 
     delete.describe {
-        tag("Drivers")
-        summary = "Delete driver"
+        tag("Intensities")
+        summary = "Delete intensity"
         responses {
             HttpStatusCode.NoContent {
-                description = "Driver deleted"
+                description = "Intensity deleted"
             }
             HttpStatusCode.NotFound {
-                description = "Driver not found"
+                description = "Intensity not found"
             }
         }
     }

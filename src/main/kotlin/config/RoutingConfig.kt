@@ -6,15 +6,24 @@ import io.ktor.server.application.*
 import io.ktor.server.routing.*
 
 fun Application.configureRouting() {
-    val rallyRepo = RallyRepository()
-    val driverRepo = DriverRepository()
+
     val codriverRepo = CodriverRepository()
+    val driverRepo = DriverRepository()
+    val intensityRepo = IntensityRepository()
+    val manufacturerRepo = ManufacturerRepository()
+    val rallyRepo = RallyRepository()
+    val tipRepo = TipRepository()
+    val warningRepo = WarningRepository()
 
     routing {
         route("/") {
-            rallyRoutes(rallyRepo)
-            driverRoutes(driverRepo)
             codriverRoutes(codriverRepo)
+            driverRoutes(driverRepo)
+            intensityRoutes(intensityRepo)
+            manufacturerRoutes(manufacturerRepo)
+            rallyRoutes(rallyRepo)
+            tipRoutes(tipRepo)
+            warningRoutes(warningRepo)
         }
     }
 }

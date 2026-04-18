@@ -1,45 +1,45 @@
 package com.racing.db
 
-import com.racing.data.Driver
+import com.racing.data.Warning
 import org.slf4j.LoggerFactory
 import java.sql.ResultSet
 import java.sql.SQLException
 import java.sql.Statement.RETURN_GENERATED_KEYS
 
-private val logger = LoggerFactory.getLogger("DriverRepository")
+private val logger = LoggerFactory.getLogger("WarningRepository")
 
-class DriverRepository {
+class WarningRepository {
 
-    fun getAll() : List<Driver> {
-        val sql = "SELECT driver_id, name, number FROM driver ORDER BY driver_id;"
+    fun getAll() : List<Warning> {
+        val sql = "SELECT warning_id, description FROM warning ORDER BY warning_id;"
 
         Database.dataSource.connection.use { connection ->
             connection.prepareStatement(sql).use { statement ->
                 statement.executeQuery().use { resultSet ->
-                    val drivers = mutableListOf<Driver>()
+                    val warnings = mutableListOf<Warning>()
                     while (resultSet.next()) {
-                        drivers += mapDriver(resultSet)
+                        warnings += mapWarning(resultSet)
                     }
-                    logger.debug("Retrieved ${drivers.size} drivers from database")
-                    return drivers
+                    logger.debug("Retrieved ${warnings.size} warnings from database")
+                    return warnings
                 }
             }
         }
     }
 
-    fun getById(id: Int): Driver? {
-        val sql = "SELECT driver_id, name, number FROM driver WHERE driver_id = ?"
+    fun getById(id: Int): Warning? {
+        val sql = "SELECT warning_id, description FROM warning WHERE warning_id = ?"
 
         Database.dataSource.connection.use { connection ->
             connection.prepareStatement(sql).use { statement ->
                 statement.setInt(1, id)
                 statement.executeQuery().use { resultSet ->
                     return if (resultSet.next()) {
-                        val driver = mapDriver(resultSet)
-                        logger.debug("Retrieved driver with ID $id: ${driver.name}")
-                        driver
+                        val warning = mapWarning(resultSet)
+                        logger.debug("Retrieved warning with ID $id: ${warning.description}")
+                        warning
                     } else {
-                        logger.debug("Driver with ID $id not found")
+                        logger.debug("Warning with ID $id not found")
                         null
                     }
                 }
@@ -47,26 +47,25 @@ class DriverRepository {
         }
     }
 
-    fun create(driver: Driver): Int {
-        val sql = "INSERT INTO driver (name, number) VALUES (?, ?)"
+    fun create(warning: Warning): Int {
+        val sql = "INSERT INTO warning (description) VALUES (?)"
 
         Database.dataSource.connection.use { connection ->
             connection.prepareStatement(sql, RETURN_GENERATED_KEYS).use { statement ->
-                statement.setString(1, driver.name)
-                statement.setObject(2, driver.number)
+                statement.setString(1, warning.description)
                 val rows = statement.executeUpdate()
                 if (rows == 0) {
-                    logger.debug("Failed creating new driver: ${driver.name}")
+                    logger.debug("Failed creating new warning: ${warning.description}")
                     throw SQLException("Insert failed, no rows created")
                 }
 
                 statement.generatedKeys.use { keys ->
                     if (keys.next()) {
                         val newId = keys.getInt(1)
-                        logger.info("Created new driver: ID=$newId, name=${driver.name}")
+                        logger.info("Created new warning: ID=$newId, description=${warning.description}")
                         return newId
                     } else {
-                        logger.debug("Insert succeeded but no generated keys found for driver: ${driver.name}")
+                        logger.debug("Insert succeeded but no generated keys found for warning: ${warning.description}")
                         throw SQLException("Insert succeeded but no generated keys found")
                     }
 
@@ -75,19 +74,18 @@ class DriverRepository {
         }
     }
 
-    fun update(id: Int, driver: Driver): Int {
-        val sql = "UPDATE driver SET name = ?, number = ? WHERE driver_id = ?"
+    fun update(id: Int, warning: Warning): Int {
+        val sql = "UPDATE warning SET description = ? WHERE warning_id = ?"
 
         Database.dataSource.connection.use { connection ->
             connection.prepareStatement(sql).use { statement ->
-                statement.setString(1, driver.name)
-                statement.setObject(2, driver.number)
-                statement.setInt(3, id)
+                statement.setString(1, warning.description)
+                statement.setInt(2, id)
                 val rows = statement.executeUpdate()
                 if (rows > 0) {
-                    logger.info("Updated driver with ID $id: ${driver.name}")
+                    logger.info("Updated warning with ID $id: ${warning.description}")
                 } else {
-                    logger.debug("Update for driver ID $id had no effect (driver not found)")
+                    logger.debug("Update for warning ID $id had no effect (warning not found)")
                 }
                 return rows
             }
@@ -95,24 +93,23 @@ class DriverRepository {
     }
 
     fun delete(id: Int): Int {
-        val sql = "DELETE FROM driver WHERE driver_id = ?"
+        val sql = "DELETE FROM warning WHERE warning_id = ?"
 
         Database.dataSource.connection.use { connection ->
             connection.prepareStatement(sql).use { statement ->
                 statement.setInt(1, id)
                 val rows = statement.executeUpdate()
                 if (rows > 0) {
-                    logger.info("Deleted driver with ID $id")
+                    logger.info("Deleted warning with ID $id")
                 } else {
-                    logger.debug("Delete for driver ID $id had no effect (driver not found)")
+                    logger.debug("Delete for warning ID $id had no effect (warning not found)")
                 }
                 return rows
             }
         }
     }
-    private fun mapDriver(rs: ResultSet) = Driver(
-        driver_id = rs.getInt("driver_id"),
-        name = rs.getString("name"),
-        number = rs.getInt("number")
+    private fun mapWarning(rs: ResultSet) = Warning(
+        warning_id = rs.getInt("warning_id"),
+        description = rs.getString("description")
     )
 }

@@ -1,6 +1,6 @@
 package com.racing.routes.docs
 
-import com.racing.data.Driver
+import com.racing.data.Manufacturer
 import io.ktor.http.*
 import io.ktor.openapi.*
 import io.ktor.server.routing.*
@@ -8,7 +8,7 @@ import io.ktor.server.routing.openapi.*
 import io.ktor.utils.io.*
 
 @OptIn(ExperimentalKtorApi::class)
-fun attachDriverOpenApi(
+fun attachManufacturerOpenApi(
     getAll: Route,
     getById: Route,
     create: Route,
@@ -16,70 +16,70 @@ fun attachDriverOpenApi(
     delete: Route,
 ) {
     getAll.describe {
-        tag("Drivers")
-        summary = "Get all drivers"
+        tag("Manufacturers")
+        summary = "Get all manufacturers"
         responses {
             HttpStatusCode.OK {
-                description = "List of driver records"
-                schema = jsonSchema<List<Driver>>()
+                description = "List of manufacturer records"
+                schema = jsonSchema<List<Manufacturer>>()
             }
         }
     }
 
     getById.describe {
-        tag("Drivers")
-        summary = "Get driver by id"
+        tag("Manufacturers")
+        summary = "Get manufacturer by id"
         responses {
             HttpStatusCode.OK {
-                description = "Driver found"
-                schema = jsonSchema<Driver>()
+                description = "Manufacturer found"
+                schema = jsonSchema<Manufacturer>()
             }
             HttpStatusCode.NotFound {
-                description = "Driver not found"
+                description = "Manufacturer not found"
             }
         }
     }
 
     create.describe {
-        tag("Drivers")
-        summary = "Create driver"
+        tag("Manufacturers")
+        summary = "Create manufacturer"
         requestBody {
             required = true
-            schema = jsonSchema<Driver>()
+            schema = jsonSchema<Manufacturer>()
         }
         responses {
             HttpStatusCode.Created {
-                description = "Driver created"
+                description = "Manufacturer created"
             }
         }
     }
 
     update.describe {
-        tag("Drivers")
-        summary = "Update driver"
+        tag("Manufacturers")
+        summary = "Update manufacturer"
         requestBody {
             required = true
-            schema = jsonSchema<Driver>()
+            schema = jsonSchema<Manufacturer>()
         }
         responses {
             HttpStatusCode.NoContent {
-                description = "Driver updated"
+                description = "Manufacturer updated"
             }
             HttpStatusCode.NotFound {
-                description = "Driver not found"
+                description = "Manufacturer not found"
             }
         }
     }
 
     delete.describe {
-        tag("Drivers")
-        summary = "Delete driver"
+        tag("Manufacturers")
+        summary = "Delete manufacturer"
         responses {
             HttpStatusCode.NoContent {
-                description = "Driver deleted"
+                description = "Manufacturer deleted"
             }
             HttpStatusCode.NotFound {
-                description = "Driver not found"
+                description = "Manufacturer not found"
             }
         }
     }
