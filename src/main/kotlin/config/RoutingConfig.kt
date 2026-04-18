@@ -1,6 +1,5 @@
 package com.racing.config
 
-import com.racing.data.RallyStageMap
 import com.racing.db.*
 import com.racing.routes.*
 import io.ktor.server.application.*
