@@ -12,6 +12,7 @@ fun Application.configureRouting() {
     val intensityRepo = IntensityRepository()
     val manufacturerRepo = ManufacturerRepository()
     val rallyRepo = RallyRepository()
+    val teamRepo = TeamRepository()
     val tipRepo = TipRepository()
     val warningRepo = WarningRepository()
 
@@ -22,6 +23,7 @@ fun Application.configureRouting() {
             intensityRoutes(intensityRepo)
             manufacturerRoutes(manufacturerRepo)
             rallyRoutes(rallyRepo)
+            teamRoutes(teamRepo, manufacturerRepo)
             tipRoutes(tipRepo)
             warningRoutes(warningRepo)
         }
