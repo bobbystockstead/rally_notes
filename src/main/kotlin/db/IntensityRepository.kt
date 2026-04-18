@@ -1,45 +1,45 @@
 package com.racing.db
 
-import com.racing.data.Driver
+import com.racing.data.Intensity
 import org.slf4j.LoggerFactory
 import java.sql.ResultSet
 import java.sql.SQLException
 import java.sql.Statement.RETURN_GENERATED_KEYS
 
-private val logger = LoggerFactory.getLogger("DriverRepository")
+private val logger = LoggerFactory.getLogger("IntensityRepository")
 
-class DriverRepository {
+class IntensityRepository {
 
-    fun getAll() : List<Driver> {
-        val sql = "SELECT driver_id, name, number FROM driver ORDER BY driver_id;"
+    fun getAll() : List<Intensity> {
+        val sql = "SELECT intensity_id, name FROM intensity ORDER BY intensity_id;"
 
         Database.dataSource.connection.use { connection ->
             connection.prepareStatement(sql).use { statement ->
                 statement.executeQuery().use { resultSet ->
-                    val drivers = mutableListOf<Driver>()
+                    val intensities = mutableListOf<Intensity>()
                     while (resultSet.next()) {
-                        drivers += mapDriver(resultSet)
+                        intensities += mapIntensity(resultSet)
                     }
-                    logger.debug("Retrieved ${drivers.size} drivers from database")
-                    return drivers
+                    logger.debug("Retrieved ${intensities.size} intensities from database")
+                    return intensities
                 }
             }
         }
     }
 
-    fun getById(id: Int): Driver? {
-        val sql = "SELECT driver_id, name, number FROM driver WHERE driver_id = ?"
+    fun getById(id: Int): Intensity? {
+        val sql = "SELECT intensity_id, name FROM intensity WHERE intensity_id = ?"
 
         Database.dataSource.connection.use { connection ->
             connection.prepareStatement(sql).use { statement ->
                 statement.setInt(1, id)
                 statement.executeQuery().use { resultSet ->
                     return if (resultSet.next()) {
-                        val driver = mapDriver(resultSet)
-                        logger.debug("Retrieved driver with ID $id: ${driver.name}")
-                        driver
+                        val intensity = mapIntensity(resultSet)
+                        logger.debug("Retrieved intensity with ID $id: ${intensity.name}")
+                        intensity
                     } else {
-                        logger.debug("Driver with ID $id not found")
+                        logger.debug("Intensity with ID $id not found")
                         null
                     }
                 }
@@ -47,26 +47,25 @@ class DriverRepository {
         }
     }
 
-    fun create(driver: Driver): Int {
-        val sql = "INSERT INTO driver (name, number) VALUES (?, ?)"
+    fun create(intensity: Intensity): Int {
+        val sql = "INSERT INTO intensity (name) VALUES (?)"
 
         Database.dataSource.connection.use { connection ->
             connection.prepareStatement(sql, RETURN_GENERATED_KEYS).use { statement ->
-                statement.setString(1, driver.name)
-                statement.setObject(2, driver.number)
+                statement.setString(1, intensity.name)
                 val rows = statement.executeUpdate()
                 if (rows == 0) {
-                    logger.debug("Failed creating new driver: ${driver.name}")
+                    logger.debug("Failed creating new intensity: ${intensity.name}")
                     throw SQLException("Insert failed, no rows created")
                 }
 
                 statement.generatedKeys.use { keys ->
                     if (keys.next()) {
                         val newId = keys.getInt(1)
-                        logger.info("Created new driver: ID=$newId, name=${driver.name}")
+                        logger.info("Created new intensity: ID=$newId, name=${intensity.name}")
                         return newId
                     } else {
-                        logger.debug("Insert succeeded but no generated keys found for driver: ${driver.name}")
+                        logger.debug("Insert succeeded but no generated keys found for intensity: ${intensity.name}")
                         throw SQLException("Insert succeeded but no generated keys found")
                     }
 
@@ -75,19 +74,18 @@ class DriverRepository {
         }
     }
 
-    fun update(id: Int, driver: Driver): Int {
-        val sql = "UPDATE driver SET name = ?, number = ? WHERE driver_id = ?"
+    fun update(id: Int, intensity: Intensity): Int {
+        val sql = "UPDATE intensity SET name = ? WHERE intensity_id = ?"
 
         Database.dataSource.connection.use { connection ->
             connection.prepareStatement(sql).use { statement ->
-                statement.setString(1, driver.name)
-                statement.setObject(2, driver.number)
-                statement.setInt(3, id)
+                statement.setString(1, intensity.name)
+                statement.setInt(2, id)
                 val rows = statement.executeUpdate()
                 if (rows > 0) {
-                    logger.info("Updated driver with ID $id: ${driver.name}")
+                    logger.info("Updated intensity with ID $id: ${intensity.name}")
                 } else {
-                    logger.debug("Update for driver ID $id had no effect (driver not found)")
+                    logger.debug("Update for intensity ID $id had no effect (intensity not found)")
                 }
                 return rows
             }
@@ -95,24 +93,23 @@ class DriverRepository {
     }
 
     fun delete(id: Int): Int {
-        val sql = "DELETE FROM driver WHERE driver_id = ?"
+        val sql = "DELETE FROM intensity WHERE intensity_id = ?"
 
         Database.dataSource.connection.use { connection ->
             connection.prepareStatement(sql).use { statement ->
                 statement.setInt(1, id)
                 val rows = statement.executeUpdate()
                 if (rows > 0) {
-                    logger.info("Deleted driver with ID $id")
+                    logger.info("Deleted intensity with ID $id")
                 } else {
-                    logger.debug("Delete for driver ID $id had no effect (driver not found)")
+                    logger.debug("Delete for intensity ID $id had no effect (intensity not found)")
                 }
                 return rows
             }
         }
     }
-    private fun mapDriver(rs: ResultSet) = Driver(
-        driver_id = rs.getInt("driver_id"),
-        name = rs.getString("name"),
-        number = rs.getInt("number")
+    private fun mapIntensity(rs: ResultSet) = Intensity(
+        intensity_id = rs.getInt("intensity_id"),
+        name = rs.getString("name")
     )
 }

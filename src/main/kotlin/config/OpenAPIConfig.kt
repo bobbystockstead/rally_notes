@@ -1,9 +1,9 @@
 package com.racing.config
 
-import io.ktor.openapi.OpenApiInfo
-import io.ktor.server.application.Application
-import io.ktor.server.plugins.swagger.swaggerUI
-import io.ktor.server.routing.routing
+import io.ktor.openapi.*
+import io.ktor.server.application.*
+import io.ktor.server.plugins.swagger.*
+import io.ktor.server.routing.*
 
 fun Application.configureOpenAPI() {
     routing {

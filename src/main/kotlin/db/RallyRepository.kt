@@ -3,11 +3,11 @@ package com.racing.db
 import com.racing.data.Rally
 import kotlinx.datetime.toJavaLocalDate
 import kotlinx.datetime.toKotlinLocalDate
+import org.slf4j.LoggerFactory
 import java.sql.ResultSet
 import java.sql.SQLException
 import java.sql.Statement.RETURN_GENERATED_KEYS
 import java.time.LocalDate
-import org.slf4j.LoggerFactory
 
 private val logger = LoggerFactory.getLogger("RallyRepository")
 

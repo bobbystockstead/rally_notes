@@ -1,11 +1,11 @@
 package com.racing.routes.docs
 
 import com.racing.data.Rally
-import io.ktor.http.HttpStatusCode
-import io.ktor.openapi.jsonSchema
-import io.ktor.server.routing.Route
-import io.ktor.server.routing.openapi.describe
-import io.ktor.utils.io.ExperimentalKtorApi
+import io.ktor.http.*
+import io.ktor.openapi.*
+import io.ktor.server.routing.*
+import io.ktor.server.routing.openapi.*
+import io.ktor.utils.io.*
 
 @OptIn(ExperimentalKtorApi::class)
 fun attachRallyOpenApi(

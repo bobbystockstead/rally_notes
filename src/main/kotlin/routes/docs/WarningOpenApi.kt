@@ -1,6 +1,6 @@
 package com.racing.routes.docs
 
-import com.racing.data.Driver
+import com.racing.data.Warning
 import io.ktor.http.*
 import io.ktor.openapi.*
 import io.ktor.server.routing.*
@@ -8,7 +8,7 @@ import io.ktor.server.routing.openapi.*
 import io.ktor.utils.io.*
 
 @OptIn(ExperimentalKtorApi::class)
-fun attachDriverOpenApi(
+fun attachWarningOpenApi(
     getAll: Route,
     getById: Route,
     create: Route,
@@ -16,70 +16,70 @@ fun attachDriverOpenApi(
     delete: Route,
 ) {
     getAll.describe {
-        tag("Drivers")
-        summary = "Get all drivers"
+        tag("Warnings")
+        summary = "Get all warnings"
         responses {
             HttpStatusCode.OK {
-                description = "List of driver records"
-                schema = jsonSchema<List<Driver>>()
+                description = "List of warning records"
+                schema = jsonSchema<List<Warning>>()
             }
         }
     }
 
     getById.describe {
-        tag("Drivers")
-        summary = "Get driver by id"
+        tag("Warnings")
+        summary = "Get warning by id"
         responses {
             HttpStatusCode.OK {
-                description = "Driver found"
-                schema = jsonSchema<Driver>()
+                description = "Warning found"
+                schema = jsonSchema<Warning>()
             }
             HttpStatusCode.NotFound {
-                description = "Driver not found"
+                description = "Warning not found"
             }
         }
     }
 
     create.describe {
-        tag("Drivers")
-        summary = "Create driver"
+        tag("Warnings")
+        summary = "Create warning"
         requestBody {
             required = true
-            schema = jsonSchema<Driver>()
+            schema = jsonSchema<Warning>()
         }
         responses {
             HttpStatusCode.Created {
-                description = "Driver created"
+                description = "Warning created"
             }
         }
     }
 
     update.describe {
-        tag("Drivers")
-        summary = "Update driver"
+        tag("Warnings")
+        summary = "Update warning"
         requestBody {
             required = true
-            schema = jsonSchema<Driver>()
+            schema = jsonSchema<Warning>()
         }
         responses {
             HttpStatusCode.NoContent {
-                description = "Driver updated"
+                description = "Warning updated"
             }
             HttpStatusCode.NotFound {
-                description = "Driver not found"
+                description = "Warning not found"
             }
         }
     }
 
     delete.describe {
-        tag("Drivers")
-        summary = "Delete driver"
+        tag("Warnings")
+        summary = "Delete warning"
         responses {
             HttpStatusCode.NoContent {
-                description = "Driver deleted"
+                description = "Warning deleted"
             }
             HttpStatusCode.NotFound {
-                description = "Driver not found"
+                description = "Warning not found"
             }
         }
     }

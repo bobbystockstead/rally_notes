@@ -1,10 +1,10 @@
 package com.racing.db
 
 import com.racing.data.Codriver
+import org.slf4j.LoggerFactory
 import java.sql.ResultSet
 import java.sql.SQLException
 import java.sql.Statement.RETURN_GENERATED_KEYS
-import org.slf4j.LoggerFactory
 
 private val logger = LoggerFactory.getLogger("CodriverRepository")
 
