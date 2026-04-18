@@ -21,7 +21,7 @@ fun Route.rallyRoutes(repo: RallyRepository) {
     }
 
     val getByIdRoute = get("/rallies/{id}") {
-        val id = call.parameters["id"]!!.toInt()
+        val id = call.parsePathIdOrRespond(logger) ?: return@get
         logger.info("Received GET /rallies/$id")
         val rally = repo.getById(id)
         if (rally == null) {
@@ -44,7 +44,7 @@ fun Route.rallyRoutes(repo: RallyRepository) {
     }
 
     val updateRoute = put("/rallies/{id}") {
-        val id = call.parameters["id"]!!.toInt()
+        val id = call.parsePathIdOrRespond(logger) ?: return@put
         val rally = call.receive<Rally>()
         logger.info("Received PUT /rallies/$id with rally: ${rally.name}, date: ${rally.date}")
         val rows = repo.update(id, rally)
@@ -59,7 +59,7 @@ fun Route.rallyRoutes(repo: RallyRepository) {
     }
 
     val deleteRoute = delete("/rallies/{id}") {
-        val id = call.parameters["id"]!!.toInt()
+        val id = call.parsePathIdOrRespond(logger) ?: return@delete
         logger.info("Received DELETE /rallies/$id")
         val rows = repo.delete(id)
 

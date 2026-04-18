@@ -21,7 +21,7 @@ fun Route.manufacturerRoutes(repo: ManufacturerRepository) {
     }
 
     val getByIdRoute = get("/manufacturers/{id}") {
-        val id = call.parameters["id"]!!.toInt()
+        val id = call.parsePathIdOrRespond(logger) ?: return@get
         logger.info("Received GET /manufacturers/$id")
         val manufacturer = repo.getById(id)
         if (manufacturer == null) {
@@ -44,7 +44,7 @@ fun Route.manufacturerRoutes(repo: ManufacturerRepository) {
     }
 
     val updateRoute = put("/manufacturers/{id}") {
-        val id = call.parameters["id"]!!.toInt()
+        val id = call.parsePathIdOrRespond(logger) ?: return@put
         val manufacturer = call.receive<Manufacturer>()
         logger.info("Received PUT /manufacturers/$id with manufacturer: ${manufacturer.name}")
         val rows = repo.update(id, manufacturer)
@@ -59,7 +59,7 @@ fun Route.manufacturerRoutes(repo: ManufacturerRepository) {
     }
 
     val deleteRoute = delete("/manufacturers/{id}") {
-        val id = call.parameters["id"]!!.toInt()
+        val id = call.parsePathIdOrRespond(logger) ?: return@delete
         logger.info("Received DELETE /manufacturers/$id")
         val rows = repo.delete(id)
 

@@ -21,7 +21,7 @@ fun Route.warningRoutes(repo: WarningRepository) {
     }
 
     val getByIdRoute = get("/warnings/{id}") {
-        val id = call.parameters["id"]!!.toInt()
+        val id = call.parsePathIdOrRespond(logger) ?: return@get
         logger.info("Received GET /warnings/$id")
         val warning = repo.getById(id)
         if (warning == null) {
@@ -44,7 +44,7 @@ fun Route.warningRoutes(repo: WarningRepository) {
     }
 
     val updateRoute = put("/warnings/{id}") {
-        val id = call.parameters["id"]!!.toInt()
+        val id = call.parsePathIdOrRespond(logger) ?: return@put
         val warning = call.receive<Warning>()
         logger.info("Received PUT /warnings/$id with warning: ${warning.description}")
         val rows = repo.update(id, warning)
@@ -59,7 +59,7 @@ fun Route.warningRoutes(repo: WarningRepository) {
     }
 
     val deleteRoute = delete("/warnings/{id}") {
-        val id = call.parameters["id"]!!.toInt()
+        val id = call.parsePathIdOrRespond(logger) ?: return@delete
         logger.info("Received DELETE /warnings/$id")
         val rows = repo.delete(id)
 

@@ -1,6 +1,7 @@
 package com.racing.routes.docs
 
 import com.racing.data.Tip
+import com.racing.data.ValidationErrorResponse
 import io.ktor.http.*
 import io.ktor.openapi.*
 import io.ktor.server.routing.*
@@ -37,6 +38,10 @@ fun attachTipOpenApi(
             HttpStatusCode.NotFound {
                 description = "Tip not found"
             }
+            HttpStatusCode.BadRequest {
+                description = "Invalid path parameter: id must be an integer"
+                schema = jsonSchema<ValidationErrorResponse>()
+            }
         }
     }
 
@@ -68,6 +73,10 @@ fun attachTipOpenApi(
             HttpStatusCode.NotFound {
                 description = "Tip not found"
             }
+            HttpStatusCode.BadRequest {
+                description = "Invalid path parameter: id must be an integer"
+                schema = jsonSchema<ValidationErrorResponse>()
+            }
         }
     }
 
@@ -80,6 +89,10 @@ fun attachTipOpenApi(
             }
             HttpStatusCode.NotFound {
                 description = "Tip not found"
+            }
+            HttpStatusCode.BadRequest {
+                description = "Invalid path parameter: id must be an integer"
+                schema = jsonSchema<ValidationErrorResponse>()
             }
         }
     }

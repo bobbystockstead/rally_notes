@@ -1,6 +1,7 @@
 package com.racing.routes.docs
 
 import com.racing.data.Team
+import com.racing.data.ValidationErrorResponse
 import io.ktor.http.*
 import io.ktor.openapi.*
 import io.ktor.server.routing.*
@@ -37,6 +38,10 @@ fun attachTeamOpenApi(
             HttpStatusCode.NotFound {
                 description = "Team not found"
             }
+            HttpStatusCode.BadRequest {
+                description = "Invalid path parameter: id must be an integer"
+                schema = jsonSchema<ValidationErrorResponse>()
+            }
         }
     }
 
@@ -53,6 +58,7 @@ fun attachTeamOpenApi(
             }
             HttpStatusCode.BadRequest {
                 description = "Invalid manufacturer_id - manufacturer does not exist"
+                schema = jsonSchema<ValidationErrorResponse>()
             }
         }
     }
@@ -72,7 +78,8 @@ fun attachTeamOpenApi(
                 description = "Team not found"
             }
             HttpStatusCode.BadRequest {
-                description = "Invalid manufacturer_id - manufacturer does not exist"
+                description = "Invalid request: id must be an integer or manufacturer_id does not exist"
+                schema = jsonSchema<ValidationErrorResponse>()
             }
         }
     }
@@ -86,6 +93,10 @@ fun attachTeamOpenApi(
             }
             HttpStatusCode.NotFound {
                 description = "Team not found"
+            }
+            HttpStatusCode.BadRequest {
+                description = "Invalid path parameter: id must be an integer"
+                schema = jsonSchema<ValidationErrorResponse>()
             }
         }
     }

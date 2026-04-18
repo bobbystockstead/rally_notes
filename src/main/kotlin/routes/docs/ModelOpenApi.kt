@@ -1,6 +1,6 @@
 package com.racing.routes.docs
 
-import com.racing.data.Driver
+import com.racing.data.Model
 import com.racing.data.ValidationErrorResponse
 import io.ktor.http.*
 import io.ktor.openapi.*
@@ -9,7 +9,7 @@ import io.ktor.server.routing.openapi.*
 import io.ktor.utils.io.*
 
 @OptIn(ExperimentalKtorApi::class)
-fun attachDriverOpenApi(
+fun attachModelOpenApi(
     getAll: Route,
     getById: Route,
     create: Route,
@@ -17,26 +17,26 @@ fun attachDriverOpenApi(
     delete: Route,
 ) {
     getAll.describe {
-        tag("Drivers")
-        summary = "Get all drivers"
+        tag("Models")
+        summary = "Get all models"
         responses {
             HttpStatusCode.OK {
-                description = "List of driver records"
-                schema = jsonSchema<List<Driver>>()
+                description = "List of model records"
+                schema = jsonSchema<List<Model>>()
             }
         }
     }
 
     getById.describe {
-        tag("Drivers")
-        summary = "Get driver by id"
+        tag("Models")
+        summary = "Get model by id"
         responses {
             HttpStatusCode.OK {
-                description = "Driver found"
-                schema = jsonSchema<Driver>()
+                description = "Model found"
+                schema = jsonSchema<Model>()
             }
             HttpStatusCode.NotFound {
-                description = "Driver not found"
+                description = "Model not found"
             }
             HttpStatusCode.BadRequest {
                 description = "Invalid path parameter: id must be an integer"
@@ -46,49 +46,53 @@ fun attachDriverOpenApi(
     }
 
     create.describe {
-        tag("Drivers")
-        summary = "Create driver"
+        tag("Models")
+        summary = "Create model"
         requestBody {
             required = true
-            schema = jsonSchema<Driver>()
+            schema = jsonSchema<Model>()
         }
         responses {
             HttpStatusCode.Created {
-                description = "Driver created"
+                description = "Model created"
+            }
+            HttpStatusCode.BadRequest {
+                description = "Invalid manufacturer_id - manufacturer does not exist"
+                schema = jsonSchema<ValidationErrorResponse>()
             }
         }
     }
 
     update.describe {
-        tag("Drivers")
-        summary = "Update driver"
+        tag("Models")
+        summary = "Update model"
         requestBody {
             required = true
-            schema = jsonSchema<Driver>()
+            schema = jsonSchema<Model>()
         }
         responses {
             HttpStatusCode.NoContent {
-                description = "Driver updated"
+                description = "Model updated"
             }
             HttpStatusCode.NotFound {
-                description = "Driver not found"
+                description = "Model not found"
             }
             HttpStatusCode.BadRequest {
-                description = "Invalid path parameter: id must be an integer"
+                description = "Invalid request: id must be an integer or manufacturer_id does not exist"
                 schema = jsonSchema<ValidationErrorResponse>()
             }
         }
     }
 
     delete.describe {
-        tag("Drivers")
-        summary = "Delete driver"
+        tag("Models")
+        summary = "Delete model"
         responses {
             HttpStatusCode.NoContent {
-                description = "Driver deleted"
+                description = "Model deleted"
             }
             HttpStatusCode.NotFound {
-                description = "Driver not found"
+                description = "Model not found"
             }
             HttpStatusCode.BadRequest {
                 description = "Invalid path parameter: id must be an integer"

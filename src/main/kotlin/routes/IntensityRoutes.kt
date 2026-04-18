@@ -21,7 +21,7 @@ fun Route.intensityRoutes(repo: IntensityRepository) {
     }
 
     val getByIdRoute = get("/intensities/{id}") {
-        val id = call.parameters["id"]!!.toInt()
+        val id = call.parsePathIdOrRespond(logger) ?: return@get
         logger.info("Received GET /intensities/$id")
         val intensity = repo.getById(id)
         if (intensity == null) {
@@ -44,7 +44,7 @@ fun Route.intensityRoutes(repo: IntensityRepository) {
     }
 
     val updateRoute = put("/intensities/{id}") {
-        val id = call.parameters["id"]!!.toInt()
+        val id = call.parsePathIdOrRespond(logger) ?: return@put
         val intensity = call.receive<Intensity>()
         logger.info("Received PUT /intensities/$id with intensity: ${intensity.name}")
         val rows = repo.update(id, intensity)
@@ -59,7 +59,7 @@ fun Route.intensityRoutes(repo: IntensityRepository) {
     }
 
     val deleteRoute = delete("/intensities/{id}") {
-        val id = call.parameters["id"]!!.toInt()
+        val id = call.parsePathIdOrRespond(logger) ?: return@delete
         logger.info("Received DELETE /intensities/$id")
         val rows = repo.delete(id)
 

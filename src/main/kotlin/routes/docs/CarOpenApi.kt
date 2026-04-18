@@ -1,6 +1,6 @@
 package com.racing.routes.docs
 
-import com.racing.data.Driver
+import com.racing.data.Car
 import com.racing.data.ValidationErrorResponse
 import io.ktor.http.*
 import io.ktor.openapi.*
@@ -9,7 +9,7 @@ import io.ktor.server.routing.openapi.*
 import io.ktor.utils.io.*
 
 @OptIn(ExperimentalKtorApi::class)
-fun attachDriverOpenApi(
+fun attachCarOpenApi(
     getAll: Route,
     getById: Route,
     create: Route,
@@ -17,26 +17,26 @@ fun attachDriverOpenApi(
     delete: Route,
 ) {
     getAll.describe {
-        tag("Drivers")
-        summary = "Get all drivers"
+        tag("Cars")
+        summary = "Get all cars"
         responses {
             HttpStatusCode.OK {
-                description = "List of driver records"
-                schema = jsonSchema<List<Driver>>()
+                description = "List of car records"
+                schema = jsonSchema<List<Car>>()
             }
         }
     }
 
     getById.describe {
-        tag("Drivers")
-        summary = "Get driver by id"
+        tag("Cars")
+        summary = "Get car by id"
         responses {
             HttpStatusCode.OK {
-                description = "Driver found"
-                schema = jsonSchema<Driver>()
+                description = "Car found"
+                schema = jsonSchema<Car>()
             }
             HttpStatusCode.NotFound {
-                description = "Driver not found"
+                description = "Car not found"
             }
             HttpStatusCode.BadRequest {
                 description = "Invalid path parameter: id must be an integer"
@@ -46,49 +46,53 @@ fun attachDriverOpenApi(
     }
 
     create.describe {
-        tag("Drivers")
-        summary = "Create driver"
+        tag("Cars")
+        summary = "Create car"
         requestBody {
             required = true
-            schema = jsonSchema<Driver>()
+            schema = jsonSchema<Car>()
         }
         responses {
             HttpStatusCode.Created {
-                description = "Driver created"
+                description = "Car created"
+            }
+            HttpStatusCode.BadRequest {
+                description = "Invalid model_id - model does not exist"
+                schema = jsonSchema<ValidationErrorResponse>()
             }
         }
     }
 
     update.describe {
-        tag("Drivers")
-        summary = "Update driver"
+        tag("Cars")
+        summary = "Update car"
         requestBody {
             required = true
-            schema = jsonSchema<Driver>()
+            schema = jsonSchema<Car>()
         }
         responses {
             HttpStatusCode.NoContent {
-                description = "Driver updated"
+                description = "Car updated"
             }
             HttpStatusCode.NotFound {
-                description = "Driver not found"
+                description = "Car not found"
             }
             HttpStatusCode.BadRequest {
-                description = "Invalid path parameter: id must be an integer"
+                description = "Invalid request: id must be an integer or model_id does not exist"
                 schema = jsonSchema<ValidationErrorResponse>()
             }
         }
     }
 
     delete.describe {
-        tag("Drivers")
-        summary = "Delete driver"
+        tag("Cars")
+        summary = "Delete car"
         responses {
             HttpStatusCode.NoContent {
-                description = "Driver deleted"
+                description = "Car deleted"
             }
             HttpStatusCode.NotFound {
-                description = "Driver not found"
+                description = "Car not found"
             }
             HttpStatusCode.BadRequest {
                 description = "Invalid path parameter: id must be an integer"

@@ -21,7 +21,7 @@ fun Route.tipRoutes(repo: TipRepository) {
     }
 
     val getByIdRoute = get("/tips/{id}") {
-        val id = call.parameters["id"]!!.toInt()
+        val id = call.parsePathIdOrRespond(logger) ?: return@get
         logger.info("Received GET /tips/$id")
         val tip = repo.getById(id)
         if (tip == null) {
@@ -44,7 +44,7 @@ fun Route.tipRoutes(repo: TipRepository) {
     }
 
     val updateRoute = put("/tips/{id}") {
-        val id = call.parameters["id"]!!.toInt()
+        val id = call.parsePathIdOrRespond(logger) ?: return@put
         val tip = call.receive<Tip>()
         logger.info("Received PUT /tips/$id with tip: ${tip.description}")
         val rows = repo.update(id, tip)
@@ -59,7 +59,7 @@ fun Route.tipRoutes(repo: TipRepository) {
     }
 
     val deleteRoute = delete("/tips/{id}") {
-        val id = call.parameters["id"]!!.toInt()
+        val id = call.parsePathIdOrRespond(logger) ?: return@delete
         logger.info("Received DELETE /tips/$id")
         val rows = repo.delete(id)
 

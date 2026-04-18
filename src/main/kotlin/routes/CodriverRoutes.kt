@@ -21,7 +21,7 @@ fun Route.codriverRoutes(repo: CodriverRepository) {
     }
 
     val getByIdRoute = get("/codrivers/{id}") {
-        val id = call.parameters["id"]!!.toInt()
+        val id = call.parsePathIdOrRespond(logger) ?: return@get
         logger.info("Received GET /codrivers/$id")
         val codriver = repo.getById(id)
         if (codriver == null) {
@@ -44,7 +44,7 @@ fun Route.codriverRoutes(repo: CodriverRepository) {
     }
 
     val updateRoute = put("/codrivers/{id}") {
-        val id = call.parameters["id"]!!.toInt()
+        val id = call.parsePathIdOrRespond(logger) ?: return@put
         val codriver = call.receive<Codriver>()
         logger.info("Received PUT /codrivers/$id with codriver: ${codriver.name}, number: ${codriver.number}")
         val rows = repo.update(id, codriver)
@@ -59,7 +59,7 @@ fun Route.codriverRoutes(repo: CodriverRepository) {
     }
 
     val deleteRoute = delete("/codrivers/{id}") {
-        val id = call.parameters["id"]!!.toInt()
+        val id = call.parsePathIdOrRespond(logger) ?: return@delete
         logger.info("Received DELETE /codrivers/$id")
         val rows = repo.delete(id)
 

@@ -21,7 +21,7 @@ fun Route.driverRoutes(repo: DriverRepository) {
     }
 
     val getByIdRoute = get("/drivers/{id}") {
-        val id = call.parameters["id"]!!.toInt()
+        val id = call.parsePathIdOrRespond(logger) ?: return@get
         logger.info("Received GET /drivers/$id")
         val driver = repo.getById(id)
         if (driver == null) {
@@ -44,7 +44,7 @@ fun Route.driverRoutes(repo: DriverRepository) {
     }
 
     val updateRoute = put("/drivers/{id}") {
-        val id = call.parameters["id"]!!.toInt()
+        val id = call.parsePathIdOrRespond(logger) ?: return@put
         val driver = call.receive<Driver>()
         logger.info("Received PUT /drivers/$id with driver: ${driver.name}, number: ${driver.number}")
         val rows = repo.update(id, driver)
@@ -59,7 +59,7 @@ fun Route.driverRoutes(repo: DriverRepository) {
     }
 
     val deleteRoute = delete("/drivers/{id}") {
-        val id = call.parameters["id"]!!.toInt()
+        val id = call.parsePathIdOrRespond(logger) ?: return@delete
         logger.info("Received DELETE /drivers/$id")
         val rows = repo.delete(id)
 
