@@ -78,7 +78,7 @@ fun attachCrewOpenApi(
                 description = "Crew not found"
             }
             HttpStatusCode.BadRequest {
-                description = "Validation failed: one or more references does not exist (driver, codriver, car, team)"
+                description = "Invalid request: id must be an integer or one or more references do not exist (driver, codriver, car, team)"
                 schema = jsonSchema<ValidationErrorResponse>()
             }
         }
