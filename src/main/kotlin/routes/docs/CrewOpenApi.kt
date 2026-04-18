@@ -57,7 +57,7 @@ fun attachCrewOpenApi(
                 description = "Crew created"
             }
             HttpStatusCode.BadRequest {
-                description = "Invalid request: id must be an integer or one or more references do not exist (driver, codriver, car, team)"
+                description = "Invalid request: missing required driver_id/codriver_id and/or one or more referenced IDs do not exist (driver, codriver, car, team)"
                 schema = jsonSchema<ValidationErrorResponse>()
             }
         }
