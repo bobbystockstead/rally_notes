@@ -1,6 +1,8 @@
 package com.racing.routes
 
 import com.racing.data.Team
+import com.racing.data.ValidationErrorResponse
+import com.racing.data.ValidationIssue
 import com.racing.db.ManufacturerRepository
 import com.racing.db.TeamRepository
 import com.racing.routes.docs.attachTeamOpenApi
@@ -26,7 +28,7 @@ fun Route.teamRoutes(repo: TeamRepository, manufacturerRepo: ManufacturerReposit
     }
 
     val getByIdRoute = get("/teams/{id}") {
-        val id = call.parameters["id"]!!.toInt()
+        val id = call.parsePathIdOrRespond(logger) ?: return@get
         logger.info("Received GET /teams/$id")
         val team = repo.getById(id)
         if (team == null) {
@@ -47,7 +49,9 @@ fun Route.teamRoutes(repo: TeamRepository, manufacturerRepo: ManufacturerReposit
             logger.warn("POST /teams rejected - manufacturer_id ${team.manufacturer_id} does not exist")
             call.respond(
                 HttpStatusCode.BadRequest,
-                mapOf("error" to "Invalid manufacturer_id", "details" to "Manufacturer does not exist")
+                ValidationErrorResponse(
+                    details = listOf(ValidationIssue("manufacturer_id", "Manufacturer does not exist"))
+                )
             )
             return@post
         }
@@ -60,7 +64,7 @@ fun Route.teamRoutes(repo: TeamRepository, manufacturerRepo: ManufacturerReposit
     }
 
     val updateRoute = put("/teams/{id}") {
-        val id = call.parameters["id"]!!.toInt()
+        val id = call.parsePathIdOrRespond(logger) ?: return@put
         val team = call.receive<Team>()
         logger.info("Received PUT /teams/$id with team: ${team.name}, manufacturer_id: ${team.manufacturer_id}")
 
@@ -69,7 +73,9 @@ fun Route.teamRoutes(repo: TeamRepository, manufacturerRepo: ManufacturerReposit
             logger.warn("PUT /teams/$id rejected - manufacturer_id ${team.manufacturer_id} does not exist")
             call.respond(
                 HttpStatusCode.BadRequest,
-                mapOf("error" to "Invalid manufacturer_id", "details" to "Manufacturer does not exist")
+                ValidationErrorResponse(
+                    details = listOf(ValidationIssue("manufacturer_id", "Manufacturer does not exist"))
+                )
             )
             return@put
         }
@@ -86,7 +92,7 @@ fun Route.teamRoutes(repo: TeamRepository, manufacturerRepo: ManufacturerReposit
     }
 
     val deleteRoute = delete("/teams/{id}") {
-        val id = call.parameters["id"]!!.toInt()
+        val id = call.parsePathIdOrRespond(logger) ?: return@delete
         logger.info("Received DELETE /teams/$id")
         val rows = repo.delete(id)
 
