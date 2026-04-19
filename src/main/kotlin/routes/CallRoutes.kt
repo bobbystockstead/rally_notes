@@ -64,7 +64,7 @@ fun Route.callRoutes(repo: CallRepository, noteSetRepo: NoteSetRepository, inten
 
     val createRoute = post("/calls") {
         val instruction = call.receive<Call>()
-        logger.info("Received POST /calls with noteID: ${instruction.note_id}, conoteId: ${instruction.sequence_number}")
+        logger.info("Received POST /calls with note_id: ${instruction.note_id}, sequence_number: ${instruction.sequence_number}")
 
         val issues = validateResources(instruction)
         if (issues.isNotEmpty()) {
