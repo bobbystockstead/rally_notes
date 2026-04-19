@@ -113,6 +113,6 @@ class StageRepository {
     private fun mapStage(rs: ResultSet) = Stage(
         stage_id = rs.getInt("stage_id"),
         name = rs.getString("name"),
-        distance = rs.getDouble("distance")
+        distance = rs.getObject("distance") as? Double
     )
 }

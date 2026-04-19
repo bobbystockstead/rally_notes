@@ -36,7 +36,7 @@ fun Route.callRoutes(repo: CallRepository, noteSetRepo: NoteSetRepository, inten
             issues += ValidationIssue("warning_id", "Warning does not exist")
         }
         if (instruction.tip_id != null && tipRepo.getById(instruction.tip_id) == null) {
-            issues += ValidationIssue("tip_id", "Warning does not exist")
+            issues += ValidationIssue("tip_id", "Tip does not exist")
         }
 
         return issues
