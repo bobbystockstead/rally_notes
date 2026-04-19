@@ -16,12 +16,12 @@ class NoteSetRepository {
         Database.dataSource.connection.use { connection ->
             connection.prepareStatement(sql).use { statement ->
                 statement.executeQuery().use { resultSet ->
-                    val rallyEntries = mutableListOf<NoteSet>()
+                    val noteSets = mutableListOf<NoteSet>()
                     while (resultSet.next()) {
-                        rallyEntries += mapNoteSet(resultSet)
+                        noteSets += mapNoteSet(resultSet)
                     }
-                    logger.debug("Retrieved ${rallyEntries.size} rallyEntries from database")
-                    return rallyEntries
+                    logger.debug("Retrieved ${noteSets.size} noteSets from database")
+                    return noteSets
                 }
             }
         }
